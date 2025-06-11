@@ -4,7 +4,6 @@ import cloud.gviana.bandwithmonitor.service.SnmpService
 import org.springframework.context.event.EventListener
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Component
-import java.time.Instant
 
 @Component
 class TrafficEventListener(
@@ -20,8 +19,6 @@ class TrafficEventListener(
             "rx" to rx.variable.toLong(),
             "tx" to tx.variable.toLong(),
         )
-
-        println("${Instant.now()}: publishing")
 
         simpMessagingTemplate.convertAndSendToUser(event.sessionId, "/queue/traffic", payload)
     }
