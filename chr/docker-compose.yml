@@ -1,0 +1,9 @@
+services:
+    chr:
+        build: .
+        image: chr
+        container_name: chr
+        ports:
+            - 22:22
+            - 8291:8291
+            - 161:161/udp
