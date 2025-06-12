@@ -1,5 +1,7 @@
 # Bandwidth Monitor para Mikrotik 🌐📊
 
+![Print Bandwith Monitor](print.png)
+
 Projeto desenvolvido para a disciplina **Redes II**, com o objetivo de criar uma interface web que exiba em **tempo real** o gráfico de utilização de **bandwidth** de uma interface de rede de um **roteador Mikrotik**.
 
 ---
