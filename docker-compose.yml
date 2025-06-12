@@ -1,0 +1,21 @@
+services:
+    chr:
+        build: ./chr
+        image: chr
+        container_name: chr
+        ports:
+            - 22:22
+            - 8291:8291
+            - 161:161/udp
+    api:
+        build: ./api
+        image: bandwith-monitor-api
+        container_name: bandwith-monitor-api
+        ports:
+            - 8080:8080
+    front:
+        build: ./front
+        image: bandwith-monitor-front
+        container_name: bandwith-monitor-front
+        ports:
+            - 80:8080

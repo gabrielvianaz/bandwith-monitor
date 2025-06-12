@@ -1,11 +1,10 @@
 FROM gradle:jdk21-alpine AS build
-WORKDIR /app
-RUN apk update && apk add git
-RUN git clone https://github.com/gabrielvianaz/bandwith-monitor.git .
-RUN ./gradlew clean build
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle build --no-daemon
 
 FROM openjdk:21
-WORKDIR /app
-COPY --from=build /app/build/libs/bandwith-monitor.jar bandwith-monitor.jar
+RUN mkdir /app
+COPY --from=build /home/gradle/src/build/libs/bandwith-monitor.jar /app/bandwith-monitor.jar
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","/app/bandwith-monitor.jar"]
