@@ -58,7 +58,7 @@ cd bandwith-monitor
 docker compose up --build
 ```
 
-Caso também deseje provisionar o CHR, utilize o perfil `chr`:
+Caso também deseje provisionar o Mikrotik CHR, utilize o perfil `chr`:
 
 ```bash
 docker compose --profile chr up --build
@@ -77,3 +77,9 @@ docker compose --profile chr up --build
 | 22    | TCP       | SSH                           |
 | 161   | UDP       | SNMP                          |
 | 8291  | TCP       | Winbox                        |
+
+Para que seja possível utilizá-lo na interface, é necessário habilitar o SNMP através do comando:
+
+```bash
+snmp set enabled=yes
+```
