@@ -58,13 +58,19 @@ cd bandwith-monitor
 docker compose up --build
 ```
 
+Caso também deseje provisionar o CHR, utilize o perfil `chr`:
+
+```bash
+docker compose --profile chr up --build
+```
+
 3. Acesse a interface web em:  
    👉 `http://localhost`
 
 4. A API estará disponível em:  
    👉 `http://localhost:8080`
 
-5. O roteador Mikrotik CHR estará exposto nas seguintes portas:
+5. Caso tenha utilizado o perfil `chr`, o roteador Mikrotik CHR estará exposto nas seguintes portas:
 
 | Porta | Protocolo | Descrição                     |
 |-------|-----------|-------------------------------|

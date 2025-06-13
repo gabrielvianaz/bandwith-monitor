@@ -3,19 +3,24 @@ services:
         build: ./chr
         image: chr
         container_name: chr
+        network_mode: bridge
         ports:
             - 22:22
             - 8291:8291
             - 161:161/udp
+        profiles:
+            - chr
     api:
         build: ./api
         image: bandwith-monitor-api
         container_name: bandwith-monitor-api
+        network_mode: bridge
         ports:
             - 8080:8080
     front:
         build: ./front
         image: bandwith-monitor-front
         container_name: bandwith-monitor-front
+        network_mode: bridge
         ports:
             - 80:8080

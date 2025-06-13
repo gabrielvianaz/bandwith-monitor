@@ -47,8 +47,8 @@ const currentRate = computed(() => {
   if (!option.value.series[1].data.length) return null
 
   return {
-    tx: option.value.series[1].data.slice(-1)[0],
-    rx: option.value.series[0].data.slice(-1)[0],
+    tx: option.value.series[0].data.slice(-1)[0],
+    rx: option.value.series[1].data.slice(-1)[0],
     lastUpdate: option.value.xAxis.data.slice(-1)[0],
   }
 })
@@ -77,8 +77,8 @@ function getTraffic(event: Event) {
         const rxRate = toKbps(receivedBytes, intervalInSeconds)
 
         option.value.xAxis.data.push(now.toLocaleString())
-        option.value.series[0].data.push(rxRate)
-        option.value.series[1].data.push(txRate)
+        option.value.series[0].data.push(txRate)
+        option.value.series[1].data.push(rxRate)
 
         if (option.value.xAxis.data.length > 100) {
           option.value.xAxis.data.shift()
@@ -91,7 +91,7 @@ function getTraffic(event: Event) {
     },
     {
       address: address.value,
-      interface: interfaceName.value.replace('ether', ''),
+      interface: interfaceName.value,
     },
   )
 }
@@ -117,17 +117,6 @@ function toKbps(bytes: number, intervalInSeconds: number): number {
 function roundToOneDecimalPlace(value: number): number {
   return Math.round(value * 10) / 10
 }
-
-async function getInterfaces(event: Event) {
-  event.preventDefault()
-
-  const response = await fetch(`http://localhost:8080/interfaces?address=${address.value}`, {
-    method: 'GET',
-  })
-  if (response.ok) {
-    interfaces.value = await response.json()
-  }
-}
 </script>
 
 <template>
@@ -138,29 +127,21 @@ async function getInterfaces(event: Event) {
           <label for="address">Address:</label>
           <input id="address" v-model="address" :disabled="!!subscription" type="text" />
         </div>
-        <div v-if="address && interfaces.length">
+        <div>
           <label for="interface">Interface:</label>
-          <select v-if="interfaces.length" id="interface" v-model="interfaceName">
-            <option disabled selected value="">Select Interface</option>
-            <option v-for="item in interfaces" :key="item" :value="item">{{ item }}</option>
-          </select>
+          <input id="interface" v-model="interfaceName" :disabled="!!subscription" type="text" />
         </div>
       </div>
       <div class="buttons">
-        <button :disabled="!address || !!subscription" type="submit" @click="getInterfaces">
-          Get Interfaces
-        </button>
-
         <button
-          v-if="interfaceName"
-          :disabled="!interfaceName || !!subscription"
+          :disabled="!address || !interfaceName || !!subscription"
           type="submit"
           @click="getTraffic"
         >
           Get Traffic
         </button>
 
-        <button v-if="subscription" type="submit" @click="stop">Stop</button>
+        <button :disabled="!subscription" type="submit" @click="stop">Stop</button>
       </div>
     </form>
     <VChart v-if="subscription" :option="option" autoresize style="height: 400px" />

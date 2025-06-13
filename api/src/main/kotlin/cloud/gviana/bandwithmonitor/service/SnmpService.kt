@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service
 @Service
 class SnmpService {
 
-    fun sendCommand(address: String, oid: String, getNext: Boolean = false): List<VariableBinding> {
+    fun sendCommand(address: String, oid: String): List<VariableBinding> {
         try {
             val transport = getTransport()
             val target = getTarget(address)
@@ -22,7 +22,7 @@ class SnmpService {
             val pdu = PDU().apply {
                 add(VariableBinding(OID(oid)))
             }
-            val responseEvent = if (getNext) snmp.getNext(pdu, target) else snmp.get(pdu, target)
+            val responseEvent = snmp.get(pdu, target)
             val response = responseEvent.response ?: throw RuntimeException("Invalid SNMP response")
 
             if (response.errorStatus != PDU.noError) {
